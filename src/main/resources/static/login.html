@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<title>🌸 Login | Expense Manager</title>
+
+<style>
+
+body{
+font-family:"Segoe UI",sans-serif;
+background:linear-gradient(135deg,#ffe6f0,#fff0f5,#f3e8ff);
+height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+}
+
+.card{
+background:white;
+padding:30px;
+width:320px;
+border-radius:20px;
+box-shadow:0 10px 25px rgba(0,0,0,0.1);
+text-align:center;
+}
+
+h2{
+color:#ff6fa5;
+margin-bottom:20px;
+}
+
+input{
+width:100%;
+padding:10px;
+margin-top:10px;
+border-radius:10px;
+border:1px solid #ddd;
+}
+
+button{
+width:100%;
+padding:10px;
+margin-top:15px;
+border:none;
+border-radius:10px;
+background:#ff8fc7;
+color:white;
+font-weight:bold;
+cursor:pointer;
+}
+
+button:hover{
+background:#ff6fa5;
+}
+
+.toggle{
+margin-top:15px;
+font-size:14px;
+color:#666;
+cursor:pointer;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="card">
+
+<h2 id="title">Login</h2>
+
+<input id="username" placeholder="Username">
+<input id="password" type="password" placeholder="Password">
+
+<button onclick="submitForm()">Login</button>
+
+<div class="toggle" onclick="toggleMode()">
+Don't have an account? Sign up
+</div>
+
+</div>
+
+<script>
+
+let mode="login"
+
+function toggleMode(){
+
+if(mode==="login"){
+mode="signup"
+document.getElementById("title").innerText="Sign Up"
+document.querySelector("button").innerText="Create Account"
+document.querySelector(".toggle").innerText="Already have an account? Login"
+}else{
+mode="login"
+document.getElementById("title").innerText="Login"
+document.querySelector("button").innerText="Login"
+document.querySelector(".toggle").innerText="Don't have an account? Sign up"
+}
+
+}
+
+function submitForm(){
+
+const user={
+username:document.getElementById("username").value,
+password:document.getElementById("password").value
+}
+
+if(mode==="signup"){
+
+fetch("http://localhost:8080/auth/signup",{
+method:"POST",
+headers:{"Content-Type":"application/json"},
+body:JSON.stringify(user)
+})
+.then(res=>{
+if(!res.ok) throw new Error()
+alert("Account created! Please login.")
+toggleMode()
+})
+.catch(()=>{
+alert("Signup failed")
+})
+
+}else{
+
+fetch("http://localhost:8080/auth/login",{
+method:"POST",
+headers:{"Content-Type":"application/json"},
+body:JSON.stringify(user)
+})
+.then(res=>{
+if(!res.ok) throw new Error()
+return res.json()
+})
+.then(data=>{
+
+localStorage.setItem("userId",data.id)
+
+window.location.href="/index.html"
+
+})
+.catch(()=>{
+alert("Invalid username or password")
+})
+
+}
+
+}
+
+</script>
+
+</body>
+</html>
