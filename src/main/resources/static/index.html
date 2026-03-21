@@ -76,6 +76,26 @@ button:hover{
 
 <button onclick="addExpense()">Add Expense</button>
 
+<!-- ✅ NEW: Month Filter -->
+<select id="monthFilter" onchange="loadExpenses()">
+    <option value="">All Months</option>
+    <option value="01">January</option>
+    <option value="02">February</option>
+    <option value="03">March</option>
+    <option value="04">April</option>
+    <option value="05">May</option>
+    <option value="06">June</option>
+    <option value="07">July</option>
+    <option value="08">August</option>
+    <option value="09">September</option>
+    <option value="10">October</option>
+    <option value="11">November</option>
+    <option value="12">December</option>
+</select>
+
+<!-- ✅ NEW: Total -->
+<h3 id="totalAmount">Total: ₹0</h3>
+
 <h2>📋 My Expenses</h2>
 <div id="expenseList"></div>
 
@@ -125,10 +145,11 @@ function addExpense() {
 }
 
 
-// ✅ LOAD EXPENSES
+// ✅ LOAD + FILTER + TOTAL
 function loadExpenses(){
 
     const userId = localStorage.getItem("userId");
+    const selectedMonth = document.getElementById("monthFilter").value;
 
     fetch(`${BASE_URL}/expenses/${userId}`)
     .then(res => res.json())
@@ -137,7 +158,15 @@ function loadExpenses(){
         const list = document.getElementById("expenseList");
         list.innerHTML = "";
 
+        let total = 0;
+
         data.forEach(exp => {
+
+            const month = exp.date.split("-")[1];
+
+            if (selectedMonth && month !== selectedMonth) return;
+
+            total += exp.amount;
 
             const div = document.createElement("div");
             div.className = "expense";
@@ -145,11 +174,27 @@ function loadExpenses(){
             div.innerHTML = `
                 <b>${exp.title}</b> - ₹${exp.amount} <br>
                 ${exp.category} | ${exp.date}
+                <br>
+                <button onclick="deleteExpense(${exp.id})">Delete</button>
             `;
 
             list.appendChild(div);
         });
 
+        document.getElementById("totalAmount").innerText = "Total: ₹" + total;
+
+    });
+}
+
+
+// ✅ DELETE EXPENSE
+function deleteExpense(id){
+
+    fetch(`${BASE_URL}/expenses/${id}`, {
+        method: "DELETE"
+    })
+    .then(() => {
+        loadExpenses();
     });
 }
 

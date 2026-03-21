@@ -26,7 +26,7 @@ public class ExpenseService {
     User user = userRepository.findById(userId)
             .orElseThrow(() -> new RuntimeException("User not found"));
 
-    expense.setUser(user);   // 🔥 THIS IS CRITICAL
+    expense.setUser(user);   
 
     return expenseRepository.save(expense);
 }
