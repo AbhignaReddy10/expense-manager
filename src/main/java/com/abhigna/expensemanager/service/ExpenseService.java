@@ -21,15 +21,15 @@ public class ExpenseService {
     }
 
     // Add expense for a user
-    public Expense addExpense(Long userId, Expense expense){
+    public Expense addExpense(Long userId, Expense expense) {
 
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+    User user = userRepository.findById(userId)
+            .orElseThrow(() -> new RuntimeException("User not found"));
 
-        expense.setUser(user);
+    expense.setUser(user);   // 🔥 THIS IS CRITICAL
 
-        return expenseRepository.save(expense);
-    }
+    return expenseRepository.save(expense);
+}
 
     // Get expenses for a user
     public List<Expense> getUserExpenses(Long userId){
