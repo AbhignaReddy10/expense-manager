@@ -112,7 +112,7 @@ password:document.getElementById("password").value
 
 if(mode==="signup"){
 
-fetch("http://localhost:8080/auth/signup",{
+fetch("https://expense-manager-production-b41a.up.railway.app/auth/signup",{
 method:"POST",
 headers:{"Content-Type":"application/json"},
 body:JSON.stringify(user)
@@ -128,7 +128,7 @@ alert("Signup failed")
 
 }else{
 
-fetch("http://localhost:8080/auth/login",{
+fetch("https://expense-manager-production-b41a.up.railway.app/auth/login",{
 method:"POST",
 headers:{"Content-Type":"application/json"},
 body:JSON.stringify(user)
