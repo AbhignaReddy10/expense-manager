@@ -6,8 +6,8 @@ A full-stack expense management application that allows users to track, manage, 
 
 ## 🚀 Live Demo
 
-🌐 Frontend: https://your-netlify-link  
-⚙️ Backend API: https://your-railway-link  
+🌐 Frontend: https://relaxed-begonia-df1644.netlify.app  
+⚙️ Backend API: https://expense-manager-production-b41a.up.railway.app
 
 ---
 
